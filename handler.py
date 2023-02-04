@@ -72,9 +72,9 @@ class Dynamo:
             logger.error("Unexpected error: %s", err)
             raise ValueError('Exception on get_item function')
 
-    def create_user_stock(self, user_id, chat_id, stock):
+    def create_user_stock(self, user_id, chat_id, stocks):
+        stocks = list(dict.fromkeys(stocks))
         try:
-            stocks = [stock]
             response = self.table.put_item(
                 TableName = DB_STOCKS_TABLE_NAME,
                 Item = {
@@ -91,6 +91,8 @@ class Dynamo:
 
     def update_user_stocks(self, userId, stockList):
         try:
+            stockList = list(dict.fromkeys(stockList))
+            stockList = [x.upper() for x in stockList]
             is_success = self.table.update_item(
                 Key = {
                     USER_ID_KEY: userId
@@ -183,11 +185,22 @@ def hello(event, context):
             return {"statusCode": 200}
 
         if command == "/addstock":
-            if len(message) > 1:
+            if len(message) > 2:
+                stocks = message[1:]
+                stocks = [x.upper() for x in stocks]
+                user_stock_list = db_client.read_user_stock_list(username)
+                if len(user_stock_list) == 0:
+                    isSuccess = db_client.create_user_stock(username, chat_id, stocks)
+                else:
+                    user_stock_list += stocks
+                    isSuccess = db_client.update_user_stocks(username, user_stock_list)
+                response = (', '.join(stocks) + " is success to add!\nSee your watch list: /watchlist")
+            elif len(message) > 1:
                 stock = message[1].upper()
                 user_stock_list = db_client.read_user_stock_list(username)
                 if len(user_stock_list) == 0:
-                    isSuccess = db_client.create_user_stock(username, chat_id, stock)
+                    stocks = [message[1].upper()]
+                    isSuccess = db_client.create_user_stock(username, chat_id, stocks)
                 else:
                     isSuccess = db_client.add_user_stock(username, user_stock_list, stock)
                 response = (stock + " is success to add!\nSee your watch list: /watchlist") if isSuccess else "Error adding stock.\nPlease try again."
@@ -303,7 +316,3 @@ def check_stock_recommendation(stock, ticker=""):
     
 def is_user_allowed(user_id):
     return user_id == "aryodh" or db_client.read_user_allowed_by_user_id(user_id)
-
-
-
-    

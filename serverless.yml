@@ -45,7 +45,7 @@ functions:
       - http:
           path: sendMessage
           method: post
-          cors: true
+          cors: true  
 
 # you can overwrite defaults here
 #  stage: dev

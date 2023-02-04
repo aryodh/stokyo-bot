@@ -1,7 +1,6 @@
 import json
 import os
 import logging
-from re import A
 import sys
 
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "./vendored"))

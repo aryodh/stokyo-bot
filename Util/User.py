@@ -1,10 +1,3 @@
-import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "./vendored"))
-
-import requests
-
 # Static variable
 import Static as static
 import Util.Message as message

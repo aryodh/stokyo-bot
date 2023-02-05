@@ -7,6 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "./ven
 import requests
 import yfinance as yf
 
+# Static variable
 import Static as static
 
 logger = logging.getLogger()

@@ -30,6 +30,8 @@ provider:
   iamRoleStatements:
        - Effect: "Allow"
          Action:
+           - dynamodb:Query
+           - dynamodb:Scan
            - dynamodb:GetItem
            - dynamodb:PutItem
            - dynamodb:UpdateItem
@@ -46,7 +48,14 @@ functions:
           path: sendMessage
           method: post
           cors: true  
-
+      - schedule:
+          name: lunch-break-update
+          description: 'trigger watch list price and condition'
+          rate:
+            - cron(00 05 ? * MON-FRI *)
+          input: 
+            body: '{"event": "scheduler"}'
+        
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1

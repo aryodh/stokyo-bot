@@ -50,7 +50,7 @@ functions:
           cors: true  
       - schedule:
           name: lunch-break-update
-          description: 'trigger watch list price and condition'
+          description: 'trigger watchlist price and condition'
           rate:
             - cron(00 05 ? * MON-FRI *)
           input: 

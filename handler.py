@@ -72,7 +72,7 @@ def hello(event, context):
         elif command == "/removestock":
             return watchlist.remove_user_stock(db_client, username, messages[1:], chat_id)
         elif command == "/watchlist":
-            return watchlist.remove_user_stock(db_client, username, chat_id)
+            return watchlist.view_watchlist(db_client, username, chat_id)
         
         # Stock feature
         elif command == "/checkstock":

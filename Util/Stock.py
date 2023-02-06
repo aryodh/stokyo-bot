@@ -24,7 +24,7 @@ def check_stock(stock, ticker, chat_id):
 
         changes = stock_last_price - stock_previous_price
         changes_side = "+" if changes > 0 else ""
-        changes_percentage = changes_side + "{:.2f}%".format(round((changes / stock_previous_price) * 100), 2)
+        changes_percentage = changes_side + "{:.2f}%".format((changes / stock_previous_price) * 100)
 
         return_on_equity = stock_info['returnOnEquity'] if "returnOnEquity" in stock_info else ""
         price_to_book = stock_info['priceToBook'] if "priceToBook" in stock_info else ""

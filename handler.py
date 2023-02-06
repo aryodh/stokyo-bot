@@ -83,6 +83,7 @@ def hello(event, context):
         elif command == "/checkstockidx":
             if messages[1:]:
                 stock = messages[1].upper()
+                ticker = "JK"
                 return stock_util.check_stock(stock, ticker, chat_id)
     
         elif command == "/stockrecom":

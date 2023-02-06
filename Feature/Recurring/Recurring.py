@@ -40,8 +40,8 @@ def generate_lunch_update_message(username, stocks):
             stock_previous_price = stock_fast_info['previous_close'] if "previous_close" in stock_fast_info else ""
 
             changes = stock_last_price - stock_previous_price
-            changes_side = "+" if changes > 0 else "-"
-            changes_percentage = changes_side + "{:.2f}%".format(round((changes / stock_previous_price) * 100), 2)
+            changes_side = "+" if changes > 0 else ""
+            changes_percentage = changes_side + "{:.2f}%".format((changes / stock_previous_price) * 100)
 
             message += "*" + stock + "*\n"
             message += "- last price: " + str(stock_last_price) +"\n"

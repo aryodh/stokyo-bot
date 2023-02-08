@@ -28,7 +28,7 @@ def add_user_stock(db_client, username, stocks, chat_id):
 
 def remove_user_stock(db_client, username, stocks, chat_id):
     if stocks:
-        stock = stocks[1].upper()
+        stock = stocks[0].upper()
         user_stock_list = db_client.read_user_stock_list(username)
         if len(user_stock_list) > 0:
             isSuccess = db_client.remove_user_stock(username, user_stock_list, stock)

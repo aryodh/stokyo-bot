@@ -14,11 +14,18 @@ logger.setLevel(logging.INFO)
 def check_stock(stock, ticker, chat_id):
     try:
         stock_ticker = (stock + "." + ticker) if ticker != "" else stock
-        stock = yf.Ticker(stock_ticker)
-        stock_info = stock.info
-        stock_fast_info = stock.fast_info
+        stock_data = yf.Ticker(stock_ticker)
+        try:
+            stock_info = stock_data.info
+        except Exception as e:
+            stock_info = {}
 
-        stock_name = stock_info['longName']
+        try:
+            stock_fast_info = stock_data.fast_info
+        except Exception as e:
+            stock_fast_info = {}
+
+        stock_name = stock_info['longName'] if "longName" in stock_info else stock
         stock_last_price = stock_fast_info['last_price']
         stock_previous_price = stock_fast_info['previous_close']
 
@@ -26,9 +33,9 @@ def check_stock(stock, ticker, chat_id):
         changes_side = "+" if changes > 0 else ""
         changes_percentage = changes_side + "{:.2f}%".format((changes / stock_previous_price) * 100)
 
-        return_on_equity = stock_info['returnOnEquity'] if "returnOnEquity" in stock_info else ""
-        price_to_book = stock_info['priceToBook'] if "priceToBook" in stock_info else ""
-        dividen_yield = stock_info['dividendYield'] if "dividendYield" in stock_info else ""
+        return_on_equity = stock_info['returnOnEquity'] if "returnOnEquity" in stock_info else "Not found"
+        price_to_book = stock_info['priceToBook'] if "priceToBook" in stock_info else "Not found"
+        dividen_yield = stock_info['dividendYield'] if "dividendYield" in stock_info else "Not found"
 
         response_message = ""
         response_message += stock_name + "\n\n"
@@ -49,13 +56,16 @@ def check_stock(stock, ticker, chat_id):
 def check_stock_recommendation(stock, ticker, chat_id):
     try:
         stock_ticker =(stock + "." + ticker) if ticker != "" else stock
-        stock = yf.Ticker(stock_ticker)
-        stock_info = stock.info
+        stock_data = yf.Ticker(stock_ticker)
+        try:
+            stock_info = stock_data.info
+        except Exception as e:
+            stock_info = {}
 
-        stock_name = stock_info['longName']
-        recommendation = stock_info['recommendationKey'] if "recommendationKey" in stock_info else ""
-        target_low_price = stock_info['targetLowPrice'] if "targetLowPrice" in stock_info else ""
-        target_mean_price = stock_info['targetMeanPrice'] if "targetMeanPrice" in stock_info else ""
+        stock_name = stock_info['longName'] if "longName" in stock_info else stock
+        recommendation = stock_info['recommendationKey'] if "recommendationKey" in stock_info else "Not found"
+        target_low_price = stock_info['targetLowPrice'] if "targetLowPrice" in stock_info else "Not found"
+        target_mean_price = stock_info['targetMeanPrice'] if "targetMeanPrice" in stock_info else "Not found"
 
         response_message = ""
         response_message += stock_name + "\n\n"

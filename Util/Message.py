@@ -9,16 +9,18 @@ import requests
 import Static as static
 
 def send_message(message, chat_id):
-    data = {
-        "text": message.encode("utf8"), 
-        "chat_id": chat_id,
-        "parse_mode": "Markdown"
-    }
-    requests.post(static.SEND_MESSAGE_URL, data)
-    
+    send_message_without_return(message, chat_id)
     return {"statusCode": 200}
 
 def send_specific_message(messages):
     user_id_target = messages[0]
     message = " ".join(messages[1:])
     return send_message(message, user_id_target)
+
+def send_message_without_return(message, chat_id):
+    data = {
+        "text": message.encode("utf8"), 
+        "chat_id": chat_id,
+        "parse_mode": "Markdown"
+    }
+    requests.post(static.SEND_MESSAGE_URL, data)
